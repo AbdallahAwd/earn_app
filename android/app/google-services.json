@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "582778132032",
+    "project_id": "earnlia",
+    "storage_bucket": "earnlia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582778132032:android:af2ab60b84bc6f184ef1a5",
+        "android_client_info": {
+          "package_name": "com.amaa.earnlia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582778132032-qskphcjlt4plotmpucul4gr2m1tajfbe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhxxXsB7QdP3fdG73mPmSjZTE7XdXfpNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582778132032-qskphcjlt4plotmpucul4gr2m1tajfbe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "582778132032-pfhv2hph8l662cv9u6nrd31dnvdjd5un.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.earnApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

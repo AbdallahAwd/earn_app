@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">Earnlia</string>
+    <string name="facebook_app_id">484174627062167</string>
+    <string name="fb_login_protocol_scheme">fb484174627062167</string>
+    <string name="facebook_client_token">1107e9b061361a1dc4bebb08e4cc8b4e</string>
+</resources>
