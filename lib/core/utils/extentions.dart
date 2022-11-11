@@ -3,7 +3,7 @@ extension Formate on int {
     String sNumber = toString();
     int index = 0;
     List<String> lNumber = [];
-    if (!sNumber.contains('0')) throw 'No zero values';
+
     for (var i = 0; i < sNumber.length; i++) {
       index++;
       lNumber.add(sNumber[i]);
@@ -46,8 +46,14 @@ extension Formate on int {
 }
 
 extension FormateDate on String {
-  int formateDate() {
+  int formateDateToNum() {
     int dateToNum = int.parse(split('-').join(''));
+    return dateToNum;
+  }
+
+  int formateDate() {
+    List<String> list = split('-');
+    int dateToNum = int.parse(list[2]);
     return dateToNum;
   }
 }

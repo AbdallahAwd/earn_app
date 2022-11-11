@@ -24,6 +24,7 @@ class GameEntity extends Equatable {
         description,
         gameUrl,
         amount,
+        gameImage,
         isDone,
         isRecommended,
       ];

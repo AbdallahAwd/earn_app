@@ -1,3 +1,4 @@
+import 'package:earnlia/core/utils/conponents.dart';
 import 'package:earnlia/core/utils/extentions.dart';
 import 'package:earnlia/features/home/presentation/cubit/home_cubit.dart';
 import 'package:earnlia/features/home/presentation/widgets/HomeStates/success.dart';
@@ -5,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../../../../core/resources/colors.dart';
 import '../../../login/data/models/usage.dart';
 import '../widgets/HomeStates/error.dart';
@@ -48,46 +48,59 @@ class _HomeState extends State<Home> {
             if (state.states == States.success) {
               DateTime? lastPressed;
               return WillPopScope(
-                onWillPop: () async {
-                  final now = DateTime.now();
+                  onWillPop: () async {
+                    final now = DateTime.now();
+                    List<String> lastOnline =
+                        state.user!.lastBalanceUpdate.split('-');
+                    int lastDay = int.parse(lastOnline[2]);
+                    int thisDay = C.formattedDate.formateDate();
 
-                  const maxDuration = Duration(seconds: 2);
-                  final isWarning = lastPressed == null ||
-                      now.difference(lastPressed!) > maxDuration;
+                    const maxDuration = Duration(seconds: 2);
+                    final isWarning = lastPressed == null ||
+                        now.difference(lastPressed!) > maxDuration;
 
-                  if (isWarning) {
-                    HomeCubit.get(context).getUsage();
-                    lastPressed = DateTime.now();
-                    Usage usages = state.user!.usage;
-                    int time = HomeCubit.get(context).usageTime;
+                    if (isWarning) {
+                      HomeCubit.get(context).getUsage();
+                      lastPressed = DateTime.now();
+                      Usage usages = state.user!.usage;
+                      int time = HomeCubit.get(context).usageTime;
+                      Fluttertoast.showToast(msg: 'Tap Again to exit');
+                      if (lastDay + 7 >= thisDay) {
+                        HomeCubit.get(context).usageOfToday(
+                            usage: Usage(
+                                monday: 0,
+                                tuesday: 0,
+                                wednesday: 0,
+                                thursday: 0,
+                                friday: 0,
+                                saturday: 0,
+                                sunday: 0));
+                      }
+                      HomeCubit.get(context).usageOfToday(
+                          usage: Usage(
+                              monday: day == 'Monday' ? time : usages.monday,
+                              tuesday: day == 'Tuesday' ? time : usages.tuesday,
+                              wednesday:
+                                  day == 'Wednesday' ? time : usages.wednesday,
+                              thursday:
+                                  day == 'Thursday' ? time : usages.thursday,
+                              friday: day == 'Friday' ? time : usages.friday,
+                              saturday:
+                                  day == 'Saturday' ? time : usages.saturday,
+                              sunday: day == 'Sunday' ? time : usages.sunday));
 
-                    Fluttertoast.showToast(msg: 'Tap Again to exit');
-                    HomeCubit.get(context).usageOfToday(
-                        usage: Usage(
-                            monday: day == 'Monday' ? time : usages.monday,
-                            tuesday: day == 'Tuesday' ? time : usages.tuesday,
-                            wednesday:
-                                day == 'Wednesday' ? time : usages.wednesday,
-                            thursday:
-                                day == 'Thursday' ? time : usages.thursday,
-                            friday: day == 'Friday' ? time : usages.friday,
-                            saturday:
-                                day == 'Saturday' ? time : usages.saturday,
-                            sunday: day == 'Sunday' ? time : usages.sunday));
-
-                    return false;
-                  } else {
-                    return true;
-                  }
-                },
-                child: Scaffold(
-                  backgroundColor: Colors.transparent,
-                  body: Builder(builder: (context) {
-                    HomeCubit.get(context).getUsage();
-                    return Success(state: state);
-                  }),
-                ),
-              );
+                      return false;
+                    } else {
+                      return true;
+                    }
+                  },
+                  child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: Builder(builder: (context) {
+                      HomeCubit.get(context).getUsage();
+                      return Success(state: state);
+                    }),
+                  ));
             } else if (state.states == States.error) {
               return ErrorBody(
                 error: state.error,

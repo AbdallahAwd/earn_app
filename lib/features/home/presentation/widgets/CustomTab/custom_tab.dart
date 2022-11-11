@@ -165,6 +165,9 @@ class _CustomTabState extends State<CustomTab> {
                                 if (reword.isNotEmpty)
                                   ListView.separated(
                                       itemCount: reword.length,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
                                       separatorBuilder: (context, index) =>
                                           const SizedBox(height: 10),
                                       itemBuilder: (context, index) =>

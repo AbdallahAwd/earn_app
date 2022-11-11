@@ -36,7 +36,8 @@ class _GameBuilderState extends State<GameBuilder> {
               children: [
                 CarouselSlider(
                   items: [
-                    Image.network(widget.game[currentIndex].gameImage),
+                    for (var e in widget.game)
+                      if (e.isRecommended) Image.network(e.gameImage),
                   ],
                   carouselController: buttonCarouselController,
                   options: CarouselOptions(
@@ -44,7 +45,6 @@ class _GameBuilderState extends State<GameBuilder> {
                     onPageChanged: (index, reason) {
                       setState(() {
                         currentIndex = index;
-                        print(index);
                       });
                     },
                     enlargeCenterPage: true,
@@ -75,36 +75,30 @@ class _GameBuilderState extends State<GameBuilder> {
           const SizedBox(
             height: 10,
           ),
-          SizedBox(
-            height: 85.h,
-            child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: 100,
-                    height: 100,
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18)),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.network(
-                          'https://play-lh.googleusercontent.com/N0UxhBVUmx8s7y3F7Kqre2AcpXyPDKAp8nHjiPPoOONc_sfugHCYMjBpbUKCMlK_XUs=w240-h480-rw',
-                          width: 40,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                for (var e in widget.game)
+                  if (!e.isRecommended)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Container(
+                        width: 85.w,
+                        height: 85.h,
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(18),
+                          image: DecorationImage(
+                              image: NetworkImage(e.gameImage),
+                              fit: BoxFit.cover),
                         ),
-                      ],
+                      ),
                     ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    width: 10,
-                  );
-                },
-                itemCount: 10),
-          )
+              ],
+            ),
+          ),
         ],
       ),
     );

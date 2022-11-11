@@ -69,8 +69,8 @@ class _SuccessState extends State<Success> {
   void initState() {
     balance = widget.state.user!.balance;
 
-    if (C.formattedDate.formateDate() >
-        widget.state.user!.lastBalanceUpdate.formateDate()) {
+    if (C.formattedDate.formateDateToNum() >
+        widget.state.user!.lastBalanceUpdate.formateDateToNum()) {
       Cache.setStrings('isRewordsDone', ['true', 'false', 'false']);
     } else {
       Cache.setStrings('isRewordsDone', ['false', 'false', 'false']);
