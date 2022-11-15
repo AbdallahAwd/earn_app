@@ -1,24 +1,7 @@
+import 'package:appcheck/appcheck.dart';
+import 'package:earnlia/features/home/domain/entities/game.dart';
+
 extension Formate on int {
-  String formateZero() {
-    String sNumber = toString();
-    int index = 0;
-    List<String> lNumber = [];
-
-    for (var i = 0; i < sNumber.length; i++) {
-      index++;
-      lNumber.add(sNumber[i]);
-    }
-
-    if (index <= 4) return sNumber;
-
-    if (index.isOdd) {
-      lNumber.insert((index / 2).floor(), ',');
-    } else {
-      lNumber.insert((index / 2).ceil(), ',');
-    }
-    return lNumber.join('');
-  }
-
   double fromCtoUSD() {
     return this / 10000;
   }
@@ -55,5 +38,12 @@ extension FormateDate on String {
     List<String> list = split('-');
     int dateToNum = int.parse(list[2]);
     return dateToNum;
+  }
+}
+
+extension Avilablitiy on GameEntity {
+  Future<bool> available() async {
+    bool? isAvailable = await AppCheck.isAppEnabled(package);
+    return isAvailable;
   }
 }

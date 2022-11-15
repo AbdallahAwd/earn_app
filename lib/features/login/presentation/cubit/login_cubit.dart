@@ -31,16 +31,16 @@ class LoginCubit extends Cubit<LoginState> {
         (r) => emit(RegisterSuccess(r)));
   }
 
-  void googleLoginOrSignUp({bool isSignUp = false}) async {
+  void googleLoginOrSignUp({required bool isSignUp}) async {
     emit(LoadingGoogle());
-    final result = await LoginUsecase(sl()).googleLogin();
+    final result = await LoginUsecase(sl()).googleLogin(isSignUp);
     result.fold((l) => emit(GoogleLoginError(l.message!)),
         (r) => emit(GoogleLoginSuccess()));
   }
 
-  void facebookLoginOrSignUp({bool isSignUp = false}) async {
+  void facebookLoginOrSignUp({required bool isSignUp}) async {
     emit(LoadingFacebook());
-    final result = await LoginUsecase(sl()).facebookLogin();
+    final result = await LoginUsecase(sl()).facebookLogin(isSignUp);
     result.fold((l) => emit(FaceBookLoginError(l.message!)),
         (r) => emit(FaceBookLoginSuccess()));
   }

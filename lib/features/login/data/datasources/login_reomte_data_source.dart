@@ -16,9 +16,9 @@ abstract class BaseLoginRemoteDataSource {
   //base login
   Future<UserCredential> login(
       {required String email, required String password});
-  Future<UserCredential> facebookLogin();
+  Future<UserCredential> facebookLogin(bool isSignin);
   //google
-  Future<UserCredential> googleLogin();
+  Future<UserCredential> googleLogin(bool isSignin);
   //save registered user
   Future<void> saveUserData(
       {required String name, required String email, required String uId});
@@ -35,18 +35,19 @@ abstract class BaseLoginRemoteDataSource {
 
 class LoginRemoteDataSource extends BaseLoginRemoteDataSource {
   @override
-  Future<UserCredential> facebookLogin() async {
+  Future<UserCredential> facebookLogin(bool isSignin) async {
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
       final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential(loginResult.accessToken!.token);
       final user = await FirebaseAuth.instance
           .signInWithCredential(facebookAuthCredential);
-
-      saveUserData(
-          name: user.user!.displayName!,
-          email: user.user!.email!,
-          uId: user.user!.uid);
+      if (isSignin) {
+        saveUserData(
+            name: user.user!.displayName!,
+            email: user.user!.email!,
+            uId: user.user!.uid);
+      }
 
       await Cache.setData(key: 'uId', value: user.user!.uid);
 
@@ -57,7 +58,7 @@ class LoginRemoteDataSource extends BaseLoginRemoteDataSource {
   }
 
   @override
-  Future<UserCredential> googleLogin() async {
+  Future<UserCredential> googleLogin(bool isSignin) async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     if (googleUser == null) {
       throw FirebaseAuthException(
@@ -73,11 +74,12 @@ class LoginRemoteDataSource extends BaseLoginRemoteDataSource {
         await FirebaseAuth.instance.signInWithCredential(credential);
 
     await Cache.setData(key: 'uId', value: user.user!.uid);
-
-    saveUserData(
-        name: user.user!.displayName!,
-        email: user.user!.email!,
-        uId: user.user!.uid);
+    if (isSignin) {
+      saveUserData(
+          name: user.user!.displayName!,
+          email: user.user!.email!,
+          uId: user.user!.uid);
+    }
 
     return user;
   }

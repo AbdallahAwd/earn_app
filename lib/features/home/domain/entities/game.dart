@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class GameEntity extends Equatable {
   final String gameName;
+  final String package;
   final String description;
   final String gameImage;
   final String gameUrl;
@@ -12,6 +13,7 @@ class GameEntity extends Equatable {
   const GameEntity(
       {required this.gameName,
       required this.description,
+      required this.package,
       required this.gameImage,
       required this.gameUrl,
       required this.isDone,

@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import '../../../domain/entities/reword.dart';
 import 'earn_builder.dart';
-import 'game_builder.dart';
+import 'app_builder.dart';
 
 class CustomTab extends StatefulWidget {
   final HomeState state;
@@ -48,7 +48,7 @@ class _CustomTabState extends State<CustomTab> {
             return StreamBuilder<List<GameEntity>>(
                 stream: HomeCubit.get(context).getGames(),
                 builder: (context, snapshot2) {
-                  final List<GameEntity> game = snapshot2.data ?? [];
+                  final List<GameEntity> app = snapshot2.data ?? [];
 
                   return SingleChildScrollView(
                     child: Column(
@@ -134,7 +134,7 @@ class _CustomTabState extends State<CustomTab> {
                                     child: Padding(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 7.0.h),
-                                      child: Text('Games',
+                                      child: Text('Apps',
                                           style: TextStyle(
                                               color: currentIndex == 0
                                                   ? Colors.black
@@ -165,8 +165,9 @@ class _CustomTabState extends State<CustomTab> {
                                 if (reword.isNotEmpty)
                                   ListView.separated(
                                       itemCount: reword.length,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
+                                      physics: reword.length > 3
+                                          ? const BouncingScrollPhysics()
+                                          : const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       separatorBuilder: (context, index) =>
                                           const SizedBox(height: 10),
@@ -177,8 +178,8 @@ class _CustomTabState extends State<CustomTab> {
                                             index: index,
                                           )),
                                 if (reword.isEmpty) Lottie.asset(AppAssets.sad),
-                                GameBuilder(
-                                  game: game,
+                                AppBuilder(
+                                  app: app,
                                 ),
                               ],
                             ),

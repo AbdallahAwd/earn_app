@@ -1,20 +1,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.amaa.earnlia" xmlns:tools="http://schemas.android.com/tools">
    <uses-permission android:name="android.permission.INTERNET"/>
+   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+   <uses-permission android:name="android.permission.WAKE_LOCK"/>
      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
         tools:ignore="ProtectedPermissions" />
          
      <queries>
        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
+        <package android:name="com.google.android.apps.maps"/>
     </queries>  -->
 
    <application
         android:label="Earnlia"
         android:name="${applicationName}"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
 
 

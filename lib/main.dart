@@ -19,6 +19,7 @@ void main() async {
   );
   await ScreenUtil.ensureScreenSize();
   await Cache.init();
+
   ServiceLocator.init();
   final String? uId = Cache.getData(key: 'uId');
 
@@ -30,8 +31,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   final String? uId;
   const MyApp(this.uId, {super.key});
-
-  // This widget is the root of your application.
 
   @override
   Widget build(BuildContext context) {

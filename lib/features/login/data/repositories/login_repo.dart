@@ -8,9 +8,10 @@ class LoginRepository extends BaseLoginRepository {
 
   LoginRepository(this.baseLoginRemoteDataSource);
   @override
-  Future<Either<FirebaseAuthException, UserCredential>> facebookLogin() async {
+  Future<Either<FirebaseAuthException, UserCredential>> facebookLogin(
+      bool isSignin) async {
     try {
-      final result = await baseLoginRemoteDataSource.facebookLogin();
+      final result = await baseLoginRemoteDataSource.facebookLogin(isSignin);
       return Right(result);
     } on FirebaseAuthException catch (e) {
       return Left(FirebaseAuthException(code: e.code, message: e.message));
@@ -18,9 +19,10 @@ class LoginRepository extends BaseLoginRepository {
   }
 
   @override
-  Future<Either<FirebaseAuthException, UserCredential>> googleLogin() async {
+  Future<Either<FirebaseAuthException, UserCredential>> googleLogin(
+      bool isSignin) async {
     try {
-      final user = await baseLoginRemoteDataSource.googleLogin();
+      final user = await baseLoginRemoteDataSource.googleLogin(isSignin);
       return Right(user);
     } on FirebaseAuthException catch (e) {
       return Left(FirebaseAuthException(code: e.code, message: e.message!));

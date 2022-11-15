@@ -4,6 +4,7 @@ import 'package:earnlia/features/home/presentation/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:intl/intl.dart' as intl;
 
 import '../../../../../core/resources/assets.dart';
 import '../../../../../core/resources/strings.dart';
@@ -136,7 +137,8 @@ class _SuccessState extends State<Success> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(balance.formateZero()),
+                            Text(intl.NumberFormat.decimalPattern()
+                                .format(balance)),
                             Text(
                               '${balance.fromCtoUSD()} USD',
                               style: const TextStyle(

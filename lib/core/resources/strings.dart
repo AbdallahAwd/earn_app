@@ -3,6 +3,7 @@ class AppStrings {
       'Welcome to Earnlia where you can earn easy money.please register to our app and enjoy.';
   static const String googleButtonText = 'sign in with Goolge';
   static const String facebookButtonText = 'sign in with Facebook';
+  static const String instructions = 'Instructions';
   static const String signUpText = 'Let\'s sign you in';
   static const String signUpText2 = 'welcome back.';
   static const String signUpText3 = 'You have been missed.';

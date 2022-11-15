@@ -1,11 +1,13 @@
 import 'package:earnlia/core/resources/assets.dart';
-import 'package:earnlia/core/utils/conponents.dart';
-import 'package:earnlia/core/utils/extentions.dart';
 import 'package:earnlia/features/home/domain/entities/reword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:intl/intl.dart' as intl;
+
 import 'package:shimmer/shimmer.dart';
+
+import '../../../../../core/utils/conponents.dart';
 
 class EarnBuilder extends StatelessWidget {
   final RewordEntity rewordEntity;
@@ -27,8 +29,7 @@ class EarnBuilder extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            // HomeCubit.get(context).deleteReword(index, rewordEntity.isDone);
-            C.earnDialog(context);
+            C.earnDialog(context, rewordEntity);
           },
           child: Container(
             padding: const EdgeInsets.all(12),
@@ -53,7 +54,8 @@ class EarnBuilder extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              rewordEntity.amount.formateZero().toString(),
+                              intl.NumberFormat.decimalPattern()
+                                  .format(rewordEntity.amount),
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),

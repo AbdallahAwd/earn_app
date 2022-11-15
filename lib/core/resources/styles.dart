@@ -21,11 +21,13 @@ class AppStyles {
       fontFamily: 'Montserrat', fontSize: 35.sp, fontWeight: FontWeight.bold);
   static TextStyle copyWith({
     double fontSize = 18,
+    FontWeight fontWeight = FontWeight.normal,
     Color color = Colors.black,
   }) =>
       TextStyle(
         fontFamily: 'Montserrat',
         color: color,
+        fontWeight: fontWeight,
         fontSize: fontSize.sp,
       );
 }

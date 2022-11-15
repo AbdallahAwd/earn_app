@@ -21,12 +21,14 @@ class LoginUsecase extends Equatable {
         email: email, password: password, name: name);
   }
 
-  Future<Either<FirebaseAuthException, UserCredential>> googleLogin() async {
-    return await baseLoginRepository.googleLogin();
+  Future<Either<FirebaseAuthException, UserCredential>> googleLogin(
+      bool isSignin) async {
+    return await baseLoginRepository.googleLogin(isSignin);
   }
 
-  Future<Either<FirebaseAuthException, UserCredential>> facebookLogin() async {
-    return await baseLoginRepository.facebookLogin();
+  Future<Either<FirebaseAuthException, UserCredential>> facebookLogin(
+      bool isSignin) async {
+    return await baseLoginRepository.facebookLogin(isSignin);
   }
 
   Future<Either<FirebaseAuthException, void>> signOut() async {

@@ -4,6 +4,7 @@ class GameModel extends GameEntity {
   const GameModel(
       {required super.gameName,
       required super.description,
+      required super.package,
       required super.gameImage,
       required super.gameUrl,
       required super.isDone,
@@ -15,6 +16,7 @@ class GameModel extends GameEntity {
         gameImage: json['game_img'],
         description: json['description'],
         gameUrl: json['game_url'],
+        package: json['package'],
         gameName: json['game_name'],
         isDone: json['isDone'],
         isRecommended: json['isRecommended'],

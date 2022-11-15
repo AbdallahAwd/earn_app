@@ -86,7 +86,8 @@ class Signin extends StatelessWidget {
                       text: AppStrings.googleButtonText,
                       isLoading: state is LoadingGoogle,
                       onPressed: () {
-                        LoginCubit.get(context).googleLoginOrSignUp();
+                        LoginCubit.get(context)
+                            .googleLoginOrSignUp(isSignUp: false);
                       },
                     ),
                     SizedBox(
@@ -95,7 +96,8 @@ class Signin extends StatelessWidget {
                     SocialButton(
                       isLoading: state is LoadingFacebook,
                       onPressed: () {
-                        LoginCubit.get(context).facebookLoginOrSignUp();
+                        LoginCubit.get(context)
+                            .facebookLoginOrSignUp(isSignUp: false);
                       },
                       backgroundColor: const Color(0xff163189),
                       text: AppStrings.facebookButtonText,
