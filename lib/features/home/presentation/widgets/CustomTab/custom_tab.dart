@@ -1,4 +1,5 @@
 import 'package:earnlia/core/resources/assets.dart';
+import 'package:earnlia/core/resources/colors.dart';
 import 'package:earnlia/core/resources/strings.dart';
 import 'package:earnlia/features/home/domain/entities/game.dart';
 import 'package:earnlia/features/home/presentation/cubit/home_cubit.dart';
@@ -11,7 +12,17 @@ import 'app_builder.dart';
 
 class CustomTab extends StatefulWidget {
   final HomeState state;
-  const CustomTab({Key? key, required this.state}) : super(key: key);
+  final String? op1;
+  final String? op2;
+  final List<Widget>? children;
+
+  const CustomTab({
+    Key? key,
+    required this.state,
+    this.op1,
+    this.op2,
+    this.children,
+  }) : super(key: key);
 
   @override
   State<CustomTab> createState() => _CustomTabState();
@@ -37,8 +48,7 @@ class _CustomTabState extends State<CustomTab> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(20)),
+          color: AppColors.opWhite, borderRadius: BorderRadius.circular(20)),
       height: 450,
       child: StreamBuilder<List<RewordEntity>>(
           stream: HomeCubit.get(context).getRewords(),
@@ -70,6 +80,7 @@ class _CustomTabState extends State<CustomTab> {
                                       _pageController.jumpToPage(0);
                                     });
                                   },
+                                  borderRadius: BorderRadius.circular(20),
                                   child: Container(
                                     width: (MediaQuery.of(context).size.width -
                                             100) /
@@ -94,7 +105,7 @@ class _CustomTabState extends State<CustomTab> {
                                     child: Padding(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 7.0.h),
-                                      child: Text('Earn',
+                                      child: Text(widget.op1 ?? 'Earn',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: currentIndex == 0
@@ -110,6 +121,7 @@ class _CustomTabState extends State<CustomTab> {
                                       _pageController.jumpToPage(1);
                                     });
                                   },
+                                  borderRadius: BorderRadius.circular(22),
                                   child: Container(
                                     width: (MediaQuery.of(context).size.width -
                                             100) /
@@ -134,7 +146,7 @@ class _CustomTabState extends State<CustomTab> {
                                     child: Padding(
                                       padding:
                                           EdgeInsets.symmetric(vertical: 7.0.h),
-                                      child: Text('Apps',
+                                      child: Text(widget.op2 ?? 'Apps',
                                           style: TextStyle(
                                               color: currentIndex == 0
                                                   ? Colors.black
@@ -147,9 +159,6 @@ class _CustomTabState extends State<CustomTab> {
                             ),
                           ),
                         ),
-                        if (snapshot1.connectionState ==
-                            ConnectionState.waiting)
-                          const CircularProgressIndicator(),
                         if (snapshot1.hasData)
                           SizedBox(
                             height: 375.h,
@@ -161,27 +170,29 @@ class _CustomTabState extends State<CustomTab> {
                                 });
                               },
                               scrollDirection: Axis.horizontal,
-                              children: [
-                                if (reword.isNotEmpty)
-                                  ListView.separated(
-                                      itemCount: reword.length,
-                                      physics: reword.length > 3
-                                          ? const BouncingScrollPhysics()
-                                          : const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(height: 10),
-                                      itemBuilder: (context, index) =>
-                                          EarnBuilder(
-                                            rewordEntity: reword[index],
-                                            isEmptyWidget: reword.isEmpty,
-                                            index: index,
-                                          )),
-                                if (reword.isEmpty) Lottie.asset(AppAssets.sad),
-                                AppBuilder(
-                                  app: app,
-                                ),
-                              ],
+                              children: widget.children ??
+                                  [
+                                    if (reword.isNotEmpty)
+                                      ListView.separated(
+                                          itemCount: reword.length,
+                                          physics: reword.length > 3
+                                              ? const BouncingScrollPhysics()
+                                              : const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(height: 10),
+                                          itemBuilder: (context, index) =>
+                                              EarnBuilder(
+                                                rewordEntity: reword[index],
+                                                isEmptyWidget: reword.isEmpty,
+                                                index: index,
+                                              )),
+                                    if (reword.isEmpty)
+                                      Lottie.asset(AppAssets.sad),
+                                    AppBuilder(
+                                      app: app,
+                                    ),
+                                  ],
                             ),
                           ),
                         if (snapshot1.hasError)

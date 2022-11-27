@@ -1,3 +1,4 @@
+import 'package:earnlia/core/resources/colors.dart';
 import 'package:earnlia/core/services/cache.dart';
 import 'package:earnlia/core/utils/extentions.dart';
 import 'package:earnlia/features/home/presentation/cubit/home_cubit.dart';
@@ -63,20 +64,17 @@ class _SuccessState extends State<Success> {
     ];
   }
 
-  int balance = 0;
+  int lastDate = 0;
+  int currentDate = 0;
   List<String> isRewordDone = [];
 
   @override
   void initState() {
-    balance = widget.state.user!.balance;
-
-    if (C.formattedDate.formateDateToNum() >
-        widget.state.user!.lastBalanceUpdate.formateDateToNum()) {
-      Cache.setStrings('isRewordsDone', ['true', 'false', 'false']);
-    } else {
-      Cache.setStrings('isRewordsDone', ['false', 'false', 'false']);
-    }
+    lastDate = widget.state.user!.lastBalanceUpdate.formateDateToNum();
+    currentDate =
+        Cache.getData(key: 'currentDate') ?? C.formattedDate.formateDateToNum();
     initList();
+    chechDate();
     super.initState();
   }
 
@@ -85,10 +83,18 @@ class _SuccessState extends State<Success> {
         Cache.getStrings('isRewordsDone') ?? ['true', 'false', 'false'];
   }
 
+  void chechDate() {
+    if (currentDate > lastDate) {
+      Cache.setStrings('isRewordsDone', ['true', 'false', 'false']);
+    } else {
+      Cache.setStrings('isRewordsDone', ['false', 'false', 'false']);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     int time = HomeCubit.get(context).usageTime;
-    print(time);
+
     return SafeArea(
         child: SizedBox(
       width: double.infinity,
@@ -138,9 +144,9 @@ class _SuccessState extends State<Success> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(intl.NumberFormat.decimalPattern()
-                                .format(balance)),
+                                .format(HomeCubit.get(context).balance)),
                             Text(
-                              '${balance.fromCtoUSD()} USD',
+                              '${HomeCubit.get(context).balance.fromCtoUSD()} USD',
                               style: const TextStyle(
                                   color: Colors.black26, fontSize: 18),
                             ),
@@ -160,7 +166,7 @@ class _SuccessState extends State<Success> {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 child: SfCartesianChart(
                   enableAxisAnimation: true,
-                  backgroundColor: Colors.white.withOpacity(0.4),
+                  backgroundColor: AppColors.opWhite,
                   title: ChartTitle(
                       text: 'Statistics', textStyle: AppStyles.normal()),
                   primaryXAxis: CategoryAxis(
@@ -194,13 +200,17 @@ class _SuccessState extends State<Success> {
                     amount: 300,
                     lottieAsset: AppAssets.nGift,
                     onPressed: () async {
+                      HomeCubit.get(context).getUser();
+
                       HomeCubit.get(context).updateBalance(amount: 300);
                       setState(() {
-                        balance = balance + 300;
+                        HomeCubit.get(context).balance += 300;
+                        currentDate -= 1;
+                        Cache.setData(key: 'currentDate', value: currentDate);
                       });
-
                       isRewordDone[0] = 'false';
                       isRewordDone[1] = 'true';
+
                       C.toast(text: 'Done');
                     },
                     isEnabled: time > 3 && isRewordDone[0] == 'true',
@@ -211,7 +221,7 @@ class _SuccessState extends State<Success> {
                       onPressed: () {
                         HomeCubit.get(context).updateBalance(amount: 500);
                         setState(() {
-                          balance = balance + 500;
+                          HomeCubit.get(context).balance += 500;
                         });
 
                         isRewordDone[1] = 'false';
@@ -224,7 +234,7 @@ class _SuccessState extends State<Success> {
                       onPressed: () {
                         HomeCubit.get(context).updateBalance(amount: 1000);
                         setState(() {
-                          balance = balance + 1000;
+                          HomeCubit.get(context).balance += 1000;
                         });
                         isRewordDone[2] = 'false';
 

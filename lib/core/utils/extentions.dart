@@ -47,3 +47,9 @@ extension Avilablitiy on GameEntity {
     return isAvailable;
   }
 }
+
+extension Convert on double {
+  double cPersentage() {
+    return (this * 100) / 25;
+  }
+}

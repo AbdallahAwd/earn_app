@@ -7,15 +7,18 @@ class AppStyles {
         fontSize: 18.sp,
         color: color,
       );
-  static TextStyle medium() => TextStyle(
+  static TextStyle medium({Color? color}) => TextStyle(
         fontFamily: 'Montserrat',
         fontSize: 24.sp,
+        color: color,
       );
 
   static TextStyle semiBold() => TextStyle(
         fontFamily: 'Montserrat',
         fontSize: 30.sp,
       );
+  static TextStyle small({Color? color}) =>
+      TextStyle(fontFamily: 'Montserrat', fontSize: 12.sp, color: color);
 
   static TextStyle bold() => TextStyle(
       fontFamily: 'Montserrat', fontSize: 35.sp, fontWeight: FontWeight.bold);

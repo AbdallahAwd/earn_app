@@ -29,7 +29,7 @@ class EarnBuilder extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            C.earnDialog(context, rewordEntity);
+            C.earnDialog(context, rewordEntity, index: index);
           },
           child: Container(
             padding: const EdgeInsets.all(12),

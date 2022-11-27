@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:earnlia/features/home/data/models/game_model.dart';
+import 'package:earnlia/features/home/data/models/invited.dart';
 import 'package:earnlia/features/home/domain/entities/game.dart';
 import 'package:earnlia/features/home/domain/usecases/home_usercase.dart';
 import 'package:earnlia/features/login/domain/entities/login_entity.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:usage_stats/usage_stats.dart';
 
@@ -19,7 +23,6 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   static HomeCubit get(context) => BlocProvider.of(context);
   int usageTime = 0;
-
   getUsage() async {
     DateTime endDate = DateTime.now();
     DateTime startDate = endDate.subtract(const Duration(hours: 12));
@@ -39,10 +42,14 @@ class HomeCubit extends Cubit<HomeState> {
     usageTime = (time / 60 / 60 / 24).ceil() + 3;
   }
 
-  void getUser() async {
+  late LogInEntity model;
+  late int balance;
+  Future<void> getUser() async {
     var user = await HomeUseCase(sl()).getUser();
     user.fold((l) => emit(HomeState(error: l.message, states: States.error)),
         (r) {
+      model = r;
+      balance = r.balance;
       emit(HomeState(user: r, states: States.success));
     });
   }
@@ -75,7 +82,7 @@ class HomeCubit extends Cubit<HomeState> {
             }).toList());
   }
 
-  void deleteReword(int index, isDone) async {
+  void deleteReword(int index, bool isDone) async {
     if (isDone) {
       await FirebaseFirestore.instance
           .collection('users')
@@ -103,5 +110,91 @@ class HomeCubit extends Cubit<HomeState> {
     updateBalance.fold(
         (l) => emit(HomeState(states: States.error, error: l.message)),
         (r) => emit(const HomeState(states: States.success)));
+  }
+
+  void sendPaypalAccount(String email) {
+    FirebaseFirestore.instance
+        .collection('Paypal')
+        .doc(Cache.getData(key: 'uId'))
+        .set({'paypalEmail': email});
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(Cache.getData(key: 'uId'))
+        .update({'balance': 0});
+  }
+
+  String _invitedUid = '';
+  Future<bool> searchCode(String code) async {
+    try {
+      var getCode = await FirebaseFirestore.instance
+          .collection('codes')
+          .where('uid', isGreaterThanOrEqualTo: code)
+          .get();
+      _invitedUid = getCode.docs[0].get('uid');
+
+      return _invitedUid.contains(code);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void applyInvitation(String code) async {
+    if (await searchCode(code)) {
+      var invitedUser = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_invitedUid)
+          .get();
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_invitedUid)
+          .update({
+        'balance': invitedUser.data()!['balance'] + 4500,
+      });
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(_invitedUid)
+          .collection('invitedPeople')
+          .add({'avatar': state.user!.avatar, 'name': state.user!.name});
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(Cache.getData(key: 'uId'))
+          .update({'isInvited': true});
+      balance += 2000;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(Cache.getData(key: 'uId'))
+          .update({'balance': state.user!.balance + 2000});
+    }
+  }
+
+  List<InvitedPeople> invitedPeople = [];
+  getInvitedPeople() async {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(Cache.getData(key: 'uId'))
+        .collection('invitedPeople')
+        .snapshots()
+        .listen((event) {
+      invitedPeople = [];
+      for (var element in event.docs) {
+        invitedPeople.add(InvitedPeople.fromJson(element.data()));
+      }
+    });
+  }
+
+  void updateAvatar(String newAvatar) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(Cache.getData(key: 'uId'))
+        .update({'avatar': newAvatar});
+  }
+
+  void logOut() {
+    Cache.removeData('uId');
+    FirebaseAuth.instance.signOut();
   }
 }

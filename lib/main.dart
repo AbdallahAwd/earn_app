@@ -22,7 +22,7 @@ void main() async {
 
   ServiceLocator.init();
   final String? uId = Cache.getData(key: 'uId');
-
+  Cache.removeData('currentDate');
   Bloc.observer = MyBlocObserver();
 
   runApp(MyApp(uId));

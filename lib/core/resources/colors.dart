@@ -5,6 +5,7 @@ class AppColors {
     Color(0xff00A19F),
     Color(0xff0F0489)
   ];
+  static Color opWhite = Colors.white.withOpacity(0.4);
   static const MaterialColor pColorSwatch = MaterialColor(
     0xff00A19F,
     <int, Color>{
