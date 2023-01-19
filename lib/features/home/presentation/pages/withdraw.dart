@@ -139,7 +139,7 @@ class _WithDrawState extends State<WithDraw>
                           bottom: 35.sm,
                           left: 16.sp,
                           child: Text(
-                              '${_controller.value >= cToUSD.cPersentage() / 100 ? cToUSD.cPersentage() : (_controller.value * 100).toStringAsFixed(1)}%'))
+                              '${_controller.value >= cToUSD.cPersentage() / 100 ? cToUSD.cPersentage().toStringAsFixed(2) : (_controller.value * 100).toStringAsFixed(1)}%'))
                     ],
                   )
                 ],

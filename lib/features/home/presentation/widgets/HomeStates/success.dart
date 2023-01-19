@@ -146,7 +146,7 @@ class _SuccessState extends State<Success> {
                             Text(intl.NumberFormat.decimalPattern()
                                 .format(HomeCubit.get(context).balance)),
                             Text(
-                              '${HomeCubit.get(context).balance.fromCtoUSD()} USD',
+                              '${HomeCubit.get(context).balance.fromCtoUSD().toStringAsFixed(2)} USD',
                               style: const TextStyle(
                                   color: Colors.black26, fontSize: 18),
                             ),

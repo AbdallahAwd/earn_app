@@ -129,7 +129,7 @@ class _HomeState extends State<Home> {
                             sweetIcon: const Icon(Icons.home_outlined),
                             sweetActive: const Icon(MyFlutterApp.home),
                             iconColors: AppColors.gradiantColor,
-                            sweetLabel: 'Withdrow'),
+                            sweetLabel: 'Home'),
                         SweetNavBarItem(
                             sweetIcon: const Icon(MyFlutterApp.money_out),
                             sweetActive: const Icon(MyFlutterApp.money),
@@ -144,7 +144,7 @@ class _HomeState extends State<Home> {
                             sweetIcon: const Icon(MyFlutterApp.person_out),
                             sweetActive: const Icon(Icons.account_circle),
                             iconColors: AppColors.gradiantColor,
-                            sweetLabel: 'Invite'),
+                            sweetLabel: 'Profile'),
                       ],
                       onTap: (index) {
                         setState(() {

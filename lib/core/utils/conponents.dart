@@ -427,7 +427,7 @@ class C {
                       height: 20,
                     ),
                     Text(
-                        'You still need ${25 - HomeCubit.get(context).balance.fromCtoUSD()} \$')
+                        'You still need ${(25 - HomeCubit.get(context).balance.fromCtoUSD()).toStringAsFixed(2)} \$')
                   ],
                 )
             ],
@@ -491,7 +491,7 @@ class C {
                     height: 20,
                   ),
                   Text(
-                      'You still need ${25 - HomeCubit.get(context).balance.fromCtoUSD()} \$')
+                      'You still need ${(25 - HomeCubit.get(context).balance.fromCtoUSD()).toStringAsFixed(2)} \$')
                 ],
               )
           ],
